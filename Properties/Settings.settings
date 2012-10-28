@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WIXWriter.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="files" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BuildFile.proj,Thumbs.db,eStoreLogo2.ico,eStoreAdminWeb.Publish.xml,eStoreWeb.Publish.xml</Value>
+    </Setting>
+    <Setting Name="fileextensions" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">cs,png,csproj,user,pdb</Value>
+    </Setting>
+    <Setting Name="directories" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">aspnet_client,tmp,App_Data,App_GlobalResources,Web References,logs,lib,obj,Properties,CustomException,Mail,ThemeConfig</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
