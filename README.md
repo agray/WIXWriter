@@ -12,7 +12,7 @@ Feel free to fork, and send me pull requests.
 
 It gets the job done.  Would love to see it optimised.
 
-More Awesomeness:
-1. Refactor so it only loops over the directory tree once...tricky with recursion involved.
-2. DRY: War is declared on anything repeated.  Anywhere.
-3. ...
+# More Awesomeness:
+ - Refactor so it only loops over the directory tree once...tricky with recursion involved.\\
+ - DRY: War is declared on anything repeated.  Anywhere.\\
+ - ...\\
