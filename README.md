@@ -15,4 +15,4 @@ It gets the job done.  Would love to see it optimised.
 ## More Awesomeness:
  - Refactor so it only loops over the directory tree once...tricky with recursion involved.\\
  - DRY: War is declared on anything repeated.  Anywhere.\\
- - ...\\
+ - ...
