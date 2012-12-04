@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using System.IO;
-using com.domaintransformations.WIXGenerator;
 using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using com.domaintransformations.WIXGenerator;
 
 namespace WIXWriter {
     static class Program {

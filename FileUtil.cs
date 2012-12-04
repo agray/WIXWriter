@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 
 namespace WIXWriter {
     public class FileUtil {
@@ -14,17 +10,16 @@ namespace WIXWriter {
             FileInfo[] fromFiles = fromDir.GetFiles("*.wx*");
             if(fromFiles.Length > 0) {
                 foreach(FileInfo file in fromFiles) {
-                    if(File.Exists(toDir.ToString() + "\\" + file.Name)) {
-                        File.Delete(toDir.ToString() + "\\" + file.Name);
-                        file.MoveTo(toDir.ToString() + "\\" + file.Name);
+                    if(File.Exists(toDir + "\\" + file.Name)) {
+                        File.Delete(toDir + "\\" + file.Name);
+                        file.MoveTo(toDir + "\\" + file.Name);
                     } else {
-                        file.MoveTo(toDir.ToString() + "\\" + file.Name);
+                        file.MoveTo(toDir + "\\" + file.Name);
                     }
                 }
                 return fromFiles.Length;
-            } else {
-                return 0;
             }
+            return 0;
         }
     }
 }

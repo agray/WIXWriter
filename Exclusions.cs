@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -50,16 +49,14 @@ namespace com.domaintransformations.util {
             }
             if(!Directory.Exists(absolutePath)) {
                 return false;
-            } else {
-                FileInfo[] files = getAllFilesInTree(absolutePath);
-                foreach(FileInfo file in files) {
-                    if(isValidFile(file.Name)) {
-                        validFileCount++;
-                    }
+            } 
+            FileInfo[] files = getAllFilesInTree(absolutePath);
+            foreach(FileInfo file in files) {
+                if(isValidFile(file.Name)) {
+                    validFileCount++;
                 }
-                return validFileCount > 0;
-
             }
+            return validFileCount > 0;
         }
 
         public bool hasFiles(FileInfo[] files) {

@@ -52,25 +52,28 @@
             // 
             // txtRoot
             // 
-            this.txtRoot.Location = new System.Drawing.Point(107, 12);
+            this.txtRoot.Location = new System.Drawing.Point(143, 15);
+            this.txtRoot.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtRoot.Name = "txtRoot";
-            this.txtRoot.Size = new System.Drawing.Size(271, 20);
+            this.txtRoot.Size = new System.Drawing.Size(360, 22);
             this.txtRoot.TabIndex = 0;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 15);
+            this.label2.Location = new System.Drawing.Point(16, 18);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(75, 13);
+            this.label2.Size = new System.Drawing.Size(99, 17);
             this.label2.TabIndex = 2;
             this.label2.Text = "Root Directory";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(384, 10);
+            this.button1.Location = new System.Drawing.Point(512, 12);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 23);
+            this.button1.Size = new System.Drawing.Size(32, 28);
             this.button1.TabIndex = 1;
             this.button1.Text = "...";
             this.button1.UseVisualStyleBackColor = true;
@@ -79,78 +82,87 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 41);
+            this.label1.Location = new System.Drawing.Point(16, 50);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 13);
+            this.label1.Size = new System.Drawing.Size(98, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "Product Name";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 69);
+            this.label3.Location = new System.Drawing.Point(16, 85);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label3.Size = new System.Drawing.Size(89, 13);
+            this.label3.Size = new System.Drawing.Size(118, 17);
             this.label3.TabIndex = 2;
             this.label3.Text = "Content Filename";
             // 
             // txtProductName
             // 
-            this.txtProductName.Location = new System.Drawing.Point(107, 38);
+            this.txtProductName.Location = new System.Drawing.Point(143, 47);
+            this.txtProductName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtProductName.Name = "txtProductName";
-            this.txtProductName.Size = new System.Drawing.Size(271, 20);
+            this.txtProductName.Size = new System.Drawing.Size(360, 22);
             this.txtProductName.TabIndex = 2;
             // 
             // txtContentName
             // 
-            this.txtContentName.Location = new System.Drawing.Point(107, 66);
+            this.txtContentName.Location = new System.Drawing.Point(143, 81);
+            this.txtContentName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtContentName.Name = "txtContentName";
-            this.txtContentName.Size = new System.Drawing.Size(271, 20);
+            this.txtContentName.Size = new System.Drawing.Size(360, 22);
             this.txtContentName.TabIndex = 3;
             this.txtContentName.Text = "WixContent.wxs";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 96);
+            this.label4.Location = new System.Drawing.Point(16, 118);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label4.Size = new System.Drawing.Size(82, 13);
+            this.label4.Size = new System.Drawing.Size(109, 17);
             this.label4.TabIndex = 2;
             this.label4.Text = "Config Filename";
             // 
             // txtConfigName
             // 
-            this.txtConfigName.Location = new System.Drawing.Point(107, 93);
+            this.txtConfigName.Location = new System.Drawing.Point(143, 114);
+            this.txtConfigName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtConfigName.Name = "txtConfigName";
-            this.txtConfigName.Size = new System.Drawing.Size(271, 20);
+            this.txtConfigName.Size = new System.Drawing.Size(360, 22);
             this.txtConfigName.TabIndex = 4;
             this.txtConfigName.Text = "Config.wxi";
             // 
             // txtProductFileName
             // 
-            this.txtProductFileName.Location = new System.Drawing.Point(107, 119);
+            this.txtProductFileName.Location = new System.Drawing.Point(143, 146);
+            this.txtProductFileName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtProductFileName.Name = "txtProductFileName";
-            this.txtProductFileName.Size = new System.Drawing.Size(271, 20);
+            this.txtProductFileName.Size = new System.Drawing.Size(360, 22);
             this.txtProductFileName.TabIndex = 5;
             this.txtProductFileName.Text = "Product.wxs";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 121);
+            this.label5.Location = new System.Drawing.Point(16, 149);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label5.Size = new System.Drawing.Size(89, 13);
+            this.label5.Size = new System.Drawing.Size(118, 17);
             this.label5.TabIndex = 2;
             this.label5.Text = "Product Filename";
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(409, 258);
+            this.btnGenerate.Location = new System.Drawing.Point(545, 318);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(62, 23);
+            this.btnGenerate.Size = new System.Drawing.Size(83, 28);
             this.btnGenerate.TabIndex = 6;
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.UseVisualStyleBackColor = true;
@@ -158,46 +170,51 @@
             // 
             // txtConsole
             // 
-            this.txtConsole.Location = new System.Drawing.Point(107, 145);
+            this.txtConsole.Location = new System.Drawing.Point(143, 178);
+            this.txtConsole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.Size = new System.Drawing.Size(364, 107);
+            this.txtConsole.Size = new System.Drawing.Size(484, 131);
             this.txtConsole.TabIndex = 9;
             this.txtConsole.TabStop = false;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 148);
+            this.label6.Location = new System.Drawing.Point(16, 182);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label6.Size = new System.Drawing.Size(80, 13);
+            this.label6.Size = new System.Drawing.Size(106, 17);
             this.label6.TabIndex = 2;
             this.label6.Text = "Console Output";
             // 
             // txtOutputPath
             // 
-            this.txtOutputPath.Location = new System.Drawing.Point(107, 287);
+            this.txtOutputPath.Location = new System.Drawing.Point(143, 353);
+            this.txtOutputPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtOutputPath.Name = "txtOutputPath";
-            this.txtOutputPath.Size = new System.Drawing.Size(271, 20);
+            this.txtOutputPath.Size = new System.Drawing.Size(360, 22);
             this.txtOutputPath.TabIndex = 8;
             // 
             // lblOutputPath
             // 
             this.lblOutputPath.AutoSize = true;
-            this.lblOutputPath.Location = new System.Drawing.Point(12, 290);
+            this.lblOutputPath.Location = new System.Drawing.Point(16, 357);
+            this.lblOutputPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOutputPath.Name = "lblOutputPath";
             this.lblOutputPath.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblOutputPath.Size = new System.Drawing.Size(64, 13);
+            this.lblOutputPath.Size = new System.Drawing.Size(84, 17);
             this.lblOutputPath.TabIndex = 2;
             this.lblOutputPath.Text = "Output Path";
             // 
             // btnMove
             // 
-            this.btnMove.Location = new System.Drawing.Point(409, 285);
+            this.btnMove.Location = new System.Drawing.Point(545, 351);
+            this.btnMove.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnMove.Name = "btnMove";
-            this.btnMove.Size = new System.Drawing.Size(62, 23);
+            this.btnMove.Size = new System.Drawing.Size(83, 28);
             this.btnMove.TabIndex = 8;
             this.btnMove.Text = "Move Files";
             this.btnMove.UseVisualStyleBackColor = true;
@@ -205,9 +222,10 @@
             // 
             // btnOutputPath
             // 
-            this.btnOutputPath.Location = new System.Drawing.Point(379, 285);
+            this.btnOutputPath.Location = new System.Drawing.Point(505, 351);
+            this.btnOutputPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOutputPath.Name = "btnOutputPath";
-            this.btnOutputPath.Size = new System.Drawing.Size(24, 23);
+            this.btnOutputPath.Size = new System.Drawing.Size(32, 28);
             this.btnOutputPath.TabIndex = 7;
             this.btnOutputPath.Text = "...";
             this.btnOutputPath.UseVisualStyleBackColor = true;
@@ -215,9 +233,10 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(340, 258);
+            this.btnClear.Location = new System.Drawing.Point(453, 318);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(63, 23);
+            this.btnClear.Size = new System.Drawing.Size(84, 28);
             this.btnClear.TabIndex = 10;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -225,9 +244,9 @@
             // 
             // frmWIXGenerator
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(481, 316);
+            this.ClientSize = new System.Drawing.Size(628, 367);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnOutputPath);
             this.Controls.Add(this.btnMove);
@@ -248,9 +267,10 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtRoot);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(489, 343);
-            this.MinimumSize = new System.Drawing.Size(489, 343);
+            this.MaximumSize = new System.Drawing.Size(646, 412);
+            this.MinimumSize = new System.Drawing.Size(646, 412);
             this.Name = "frmWIXGenerator";
             this.Text = "WIX Content Generator";
             this.ResumeLayout(false);

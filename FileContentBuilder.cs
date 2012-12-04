@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.IO;
 
 namespace com.domaintransformations.util {
     class FileContentBuilder {
