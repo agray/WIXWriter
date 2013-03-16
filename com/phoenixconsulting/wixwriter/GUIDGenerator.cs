@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 
-namespace com.domaintransformations.util {
+namespace com.phoenixconsulting.wixwriter {
     public static class GUIDGenerator {
 
         // guid version types

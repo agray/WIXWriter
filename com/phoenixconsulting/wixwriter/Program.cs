@@ -2,13 +2,13 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using com.domaintransformations.WIXGenerator;
 
-namespace WIXWriter {
+namespace com.phoenixconsulting.wixwriter {
     static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+
         [STAThread]
         static void Main(string[] args) {
             if(args.Length == 0) {
@@ -19,7 +19,7 @@ namespace WIXWriter {
                 Application.Run(generator);
             } else {
                 if(args.Length != 6) {
-                    Console.WriteLine("Must enter 6 arguments.  Enter help as first parameter for assistance.");
+                    Console.WriteLine("Must enter 6 arguments. Enter help as first parameter for assistance.");
                     Environment.Exit(0);
                 } else {
                     if(args[0].ToLower().Equals("help")) {
@@ -28,20 +28,18 @@ namespace WIXWriter {
                         Environment.Exit(0);
                     } else {
                         if(!Directory.Exists(args[0])) {
-                            Console.WriteLine("Solution directory specified does not exist.  Exiting.");
+                            Console.WriteLine("Solution directory specified does not exist. Exiting.");
                             Environment.Exit(0);
                         } else {
                             //Correct number of arguments - ready to attempt processing.
-                            ContentWriter cw = new ContentWriter();
-                            cw.writeContentOutputFile(args[0], args[2], args[3]);
-                            Console.WriteLine("Successfully completed writing WIX Content file.");
-                            cw.writeConfigOutputFile(args[1], args[3]);
+                            FileWriter.WriteConfigFile(args[1], args[3]);
                             Console.WriteLine("Successfully completed writing WIX Config file.");
-                            cw.writeProductOutputFile(args[3], args[4]);
+                            FileWriter.WriteProductFile(args[3], args[4]);
                             Console.WriteLine("Successfully completed writing WIX Product file.");
+                            FileWriter.WriteContentFile(args[0], args[2], args[3]);
+                            Console.WriteLine("Successfully completed writing WIX Content file.");
 
-                            int filesMoved = FileUtil.moveFiles(args[5]);
-
+                            int filesMoved = FileMover.MoveFiles(args[5]);
                             Console.WriteLine("Finished moving " + filesMoved + " files to " + args[5] + ".");
                             Environment.Exit(0);
                         }

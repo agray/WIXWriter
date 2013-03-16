@@ -1,4 +1,4 @@
-﻿namespace WIXWriter {
+﻿namespace com.phoenixconsulting.wixwriter {
     partial class frmWIXGenerator {
         /// <summary>
         /// Required designer variable.

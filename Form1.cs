@@ -1,10 +1,10 @@
 ﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using com.domaintransformations.WIXGenerator;
 using System.Drawing;
+using System.IO;
+using System.Text;
+using System.Windows.Forms;
 
-namespace WIXWriter {
+namespace com.phoenixconsulting.wixwriter {
     public partial class frmWIXGenerator : Form {
         //private void frmWIXGenerator_Load(object sender, EventArgs e) {
         //    Icon icoMain = new Icon("~/favicon.ico");
@@ -43,31 +43,28 @@ namespace WIXWriter {
                 txtConsole.Text = "Enter the root directory of the solution to be processed, the product name, the content output filename, the config output filename and the product output filename." + Environment.NewLine +
                                       "For Example: WIXContentWriter C:\\MySolutionRoot ProductName ProductContent.wxs Config.wxi Product.wxs";
             } else {
-                if(txtRoot.Text.Equals("") ||
-                    txtProductName.Text.Equals("") ||
-                    txtContentName.Text.Equals("") ||
-                    txtConfigName.Text.Equals("") ||
-                    txtProductFileName.Text.Equals("")) {
-                    txtConsole.Text = "Must enter 5 arguments.  Enter help as first parameter for assistance.";
+                if(txtRoot.Text.Equals(string.Empty) ||
+                    txtProductName.Text.Equals(string.Empty) ||
+                    txtContentName.Text.Equals(string.Empty) ||
+                    txtConfigName.Text.Equals(string.Empty) ||
+                    txtProductFileName.Text.Equals(string.Empty)) {
+                    txtConsole.Text = "Must enter 5 arguments. Enter help as first parameter for assistance.";
                 } else {
                     if(!Directory.Exists(txtRoot.Text)) {
                         txtConsole.Text = "Solution directory specified does not exist. Try again.";
                     } else {
                         //Correct number of arguments - ready to attempt processing.
                         removeExistingFiles();
+                        StringBuilder text = new StringBuilder();
+                        FileWriter.WriteConfigFile(txtProductName.Text, txtConfigName.Text);
+                        text.AppendLine("Successfully completed writing WIX Config file.");
+                        FileWriter.WriteProductFile(txtConfigName.Text, txtProductFileName.Text);
+                        text.AppendLine("Successfully completed writing WIX Product file.");
+                        FileWriter.WriteContentFile(txtRoot.Text, txtContentName.Text, txtConfigName.Text);
+                        text.AppendLine("Successfully completed writing WIX Content file.");
+                        text.AppendLine("Completed Processing.");
+                        txtConsole.Text = text.ToString();
                         
-                        ContentWriter cw = new ContentWriter();
-                        cw.writeContentOutputFile(txtRoot.Text, txtContentName.Text, txtConfigName.Text);
-                        txtConsole.Text = "Successfully completed writing WIX Content file." + Environment.NewLine;
-                        cw.writeConfigOutputFile(txtProductName.Text, txtConfigName.Text);
-                        txtConsole.Text = txtConsole.Text + "Successfully completed writing WIX Config file." + Environment.NewLine;
-                        cw.writeProductOutputFile(txtConfigName.Text, txtProductFileName.Text);
-                        txtConsole.Text = txtConsole.Text + "Successfully completed writing WIX Product file." + Environment.NewLine;
-                        txtConsole.Text = txtConsole.Text + "Completed Processing." + Environment.NewLine;
-
-                        cw.finalise();
-                        cw = null;
-
                         setMoveFunctionVisibility(true);
                     }
                 }
@@ -91,9 +88,9 @@ namespace WIXWriter {
                 txtConsole.Text = txtConsole.Text + "Output path must by specified to move the files." + Environment.NewLine;
             } else {
                 if(!Directory.Exists(txtOutputPath.Text)) {
-                    txtConsole.Text = txtConsole.Text + "Output directory does not exist.  Try again" + Environment.NewLine;
+                    txtConsole.Text = txtConsole.Text + "Output directory does not exist. Try again" + Environment.NewLine;
                 } else {
-                    int filesMoved = FileUtil.moveFiles(txtOutputPath.Text);
+                    int filesMoved = FileMover.MoveFiles(txtOutputPath.Text);
                     txtConsole.Text = txtConsole.Text + "Finished moving " + filesMoved + " files to " + txtOutputPath.Text + Environment.NewLine;
                 }
             }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 
-namespace com.domaintransformations.util {
+namespace com.phoenixconsulting.wixwriter {
     class PrettyPrintFormatter {
-        [STAThread]
-        public static string format(string s) {
+        //[STAThread]
+        public static string Format(string s) {
             StringWriter stringWriter = new StringWriter();
-            
             XmlDocument doc = new XmlDocument();
             
             //get your document
@@ -24,7 +22,6 @@ namespace com.domaintransformations.util {
             
             //write the document formatted
             xmlWriter.WriteNode(xmlReader, true);
-
             return stringWriter.ToString();
         }
     }

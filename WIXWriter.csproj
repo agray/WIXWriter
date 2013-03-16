@@ -62,19 +62,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContentWriter.cs" />
-    <Compile Include="Exclusions.cs" />
-    <Compile Include="FileContentBuilder.cs" />
-    <Compile Include="FileUtil.cs" />
+    <Compile Include="com\phoenixconsulting\wixwriter\Constants.cs" />
+    <Compile Include="com\phoenixconsulting\wixwriter\Exclusions.cs" />
+    <Compile Include="com\phoenixconsulting\wixwriter\FileMover.cs" />
+    <Compile Include="com\phoenixconsulting\wixwriter\FileUtil.cs" />
+    <Compile Include="com\phoenixconsulting\wixwriter\FileWriter.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUIDGenerator.cs" />
-    <Compile Include="PrettyPrintFormatter.cs" />
-    <Compile Include="Program.cs">
+    <Compile Include="com\phoenixconsulting\wixwriter\GUIDGenerator.cs" />
+    <Compile Include="com\phoenixconsulting\wixwriter\PrettyPrintFormatter.cs" />
+    <Compile Include="com\phoenixconsulting\wixwriter\Program.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
