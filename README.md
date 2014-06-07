@@ -13,6 +13,9 @@ Feel free to fork, and send me pull requests.
 
 It gets the job done.  Would love to see it optimised.
 
+## Like what you see?
+[Support us via gittip](https://www.gittip.com/agray/)
+
 ## More Awesomeness:
  - DRY: War is declared on anything repeated.  Anywhere.
  - Performance improvements.
