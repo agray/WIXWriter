@@ -1,5 +1,6 @@
-WIXWriter
-=========
+#WIXWriter
+
+[![Support us][gittip-image]][gittip-url]
 
 I was sick of maintaining the WIX files for my votive projects in my .net solutions.
 
@@ -15,3 +16,6 @@ It gets the job done.  Would love to see it optimised.
 ## More Awesomeness:
  - DRY: War is declared on anything repeated.  Anywhere.
  - Performance improvements.
+
+[gittip-image]:http://img.shields.io/gittip/agray.svg
+[gittip-url]:https://www.gittip.com/agray/
