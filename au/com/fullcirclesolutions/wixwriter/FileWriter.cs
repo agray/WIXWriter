@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
     public class FileWriter {
         private static readonly StringBuilder ConfigFile = new StringBuilder();
+        private static readonly StringBuilder BundleFile = new StringBuilder();
         private static readonly StringBuilder ProductFile = new StringBuilder();
         private static readonly StringBuilder ContentFile = new StringBuilder();
+
         private static readonly Dictionary<string, string> DirectoryGuiDs = new Dictionary<string, string>();
         private static readonly Dictionary<string, string> ComponentGuiDs = new Dictionary<string, string>();
 
@@ -25,84 +28,169 @@ namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
                       .AppendLine("<?define PlatformProgramFilesFolder = \"C:\\Program Files\" ?>")
                       .AppendLine("<?endif ?>")
                       .Append("</Include>");
-            WriteFile(configFilename, ConfigFile.ToString());
+            WriteFile(configFilename, ConfigFile);
         }
 
-        public static void WriteProductFile(string configFilename, string productFilename) {
+        public static void WriteBundleFile(string bundleFilename, string productName) {
+            BundleFile.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+                .AppendLine("<Wix xmlns=\"http://schemas.microsoft.com/wix/2006/wi\"")
+                .AppendLine("     xmlns:bal=\"http://schemas.microsoft.com/wix/BalExtension\">")
+                .AppendLine("<?include $(var." + productName + ".SetupLibrary.ProjectDir)\\Config.wxi?>\"")
+                .AppendLine("<Bundle Name=\"" + productName + " Installer\"")
+                .AppendLine("SplashScreenSourceFile=\"Splash/OaktonSplash.bmp\"")
+                .AppendLine("IconSourceFile=\"Icons/oakton128x128.ico\"")
+                .AppendLine("Version=\"$(var.Version)\"")
+                .AppendLine("Manufacturer=\"Full Circle Solutions\"")
+                .AppendLine("Copyright=\"Copyright © " + DateTime.Now.Year + " Full Circle Solutions. All Rights Reserved.\"")
+                .AppendLine("UpgradeCode=\"$(var.UpgradeCode)\">")
+                .AppendLine("<BootstrapperApplicationRef Id=\"WixStandardBootstrapperApplication.RtfLicense\">")
+                .AppendLine("  <bal:WixStandardBootstrapperApplication LicenseFile=\"Licences\\eula.rtf\"")
+                .AppendLine("                                          LogoFile=\"Logos\\Oakton.png\"")
+                .AppendLine("                                          SuppressOptionsUI=\"yes\"/>")
+                .AppendLine("</BootstrapperApplicationRef>")
+                .AppendLine("<Chain>")
+                .AppendLine("  <MsiPackage SourceFile=\"$(var." + productName + ".Standard.Setup.Msi.TargetPath)\" />")
+                .AppendLine("</Chain>")
+                .AppendLine("</Bundle>")
+                .AppendLine("</Wix>");
+            WriteFile(bundleFilename, BundleFile);
+        }
+
+        public static void WriteProductFile(string product) {
             ProductFile.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
                        .AppendLine("<Wix xmlns=\"http://schemas.microsoft.com/wix/2006/wi\"")
-                       .AppendLine("\n")
+                       .AppendLine("xmlns:util=\"http://schemas.microsoft.com/wix/UtilExtension\"")
+                       .AppendLine("xmlns:fx=\"http://schemas.microsoft.com/wix/NetFxExtension\">")
                        .AppendLine(" xmlns:iis=\"http://schemas.microsoft.com/wix/IIsExtension\">")
-                       .AppendLine("<?include $(sys.CURRENTDIR)\\" + configFilename + "?>")
-                       .AppendLine("<Product Id=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\" Name=\"$(var.ProductName)\" Language=\"1033\" Version=\"1.0.0.0\" Manufacturer=\"Pheonix Systems\" UpgradeCode=\"b6b32a5a-0a7b-492a-9c32-c4c773635fdf\">")
-                       .AppendLine("<Package InstallerVersion=\"200\" InstallPrivileges=\"elevated\" InstallScope=\"perMachine\" Platform=\"x86\" Compressed=\"yes\"  Description=\"$(var.ProductName)\" />")
-                       .AppendLine("<Media Id=\"1\" Cabinet=\"media1.cab\" EmbedCab=\"yes\" />")
-                       .AppendLine("<Directory Id=\"TARGETDIR\" Name=\"SourceDir\">")
-                       .AppendLine("<Directory Id=\"ROOT_DRIVE\" Name=\"root\">")
-                       .AppendLine("<Directory Id=\"IISMain\" Name=\"Inetpub\" >")
-                       .AppendLine("<Directory Id=\"WWWMain\" Name=\"wwwroot\" >")
-                       .AppendLine("<Directory Id=\"ProductWeb.Content\" Name=\"$(var.ProductName)\"  />")
-                       .AppendLine("<Component Id=\"$(var.ProductName)_productcomponent\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\"><iis:WebAppPool Id=\"$(var.ProductName)_webapppool\" Name=\"$(var.ProductName)_webapppool\" /><CreateFolder/></Component>")
-                       .AppendLine("<Component Id =\"$(var.ProductName)_websitecomponent\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
-                       .AppendLine("<iis:WebSite Id=\"$(var.ProductName)_website\" Description=\"$(var.ProductName) Website\" Directory=\"ProductWeb.Content\" WebApplication=\"$(var.ProductName)_webapp\">")
-                       .AppendLine("<iis:WebAddress Id=\"$(var.ProductName)_webAddress\" IP=\"127.0.0.1\" Port=\"80\" />")
-                       .AppendLine("<iis:WebDirProperties Id=\"$(var.ProductName)_webdirprops\" DefaultDocuments=\"Default.aspx\" Script=\"yes\" Read=\"yes\" Write=\"yes\"/>")
-                       .AppendLine("</iis:WebSite><CreateFolder/></Component>")
-                       .AppendLine("<Component Id=\"Manual\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
-                       .AppendLine("<File Id=\"Manual\" Name=\"readme.doc\" DiskId=\"1\" Source=\"readme.doc\" KeyPath=\"yes\"><Shortcut Id=\"startmenuManual\" Directory=\"ProgramMenuDir\" Name=\"Instruction Manual\" Advertise=\"yes\" /></File>")
-                       .AppendLine("</Component>")
-                       .AppendLine("<Component Id=\"WebShortcut\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
-                       .AppendLine("<File Id=\"$(var.ProductName).txt\" Name=\"$(var.ProductName).url\" Vital=\"yes\" KeyPath=\"yes\" Source=\"$(var.ProductName).txt\">")
-                       .AppendLine("<Shortcut Id=\"WebShortcut\" Directory=\"$(var.ProductName)ProgramMenuDir\" IconIndex=\"0\" Hotkey=\"0\" Name=\"$(var.ProductName)\" WorkingDirectory=\"INTERNETEXPLORER\" Advertise=\"yes\" Icon=\"eStoreLogo.ico\">")
-                       .AppendLine("<Icon Id=\"eStoreLogo.ico\" SourceFile=\"$(sys.CURRENTDIR)..\\$(var.ProductName)Web\\Icons\\eStoreLogo.ico\" />")
-                       .AppendLine("</Shortcut></File></Component>")
-                       .AppendLine("</Directory></Directory></Directory>")
-                       .AppendLine("<Directory Id=\"ProgramMenuFolder\" Name=\"Programs\">")
-                       .AppendLine("<Directory Id=\"ProgramMenuDir\" Name=\"PheonixSystems\">")
-                       .AppendLine("<Component Id=\"ProgramMenuDir\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\"><RemoveFolder Id=\"ProgramMenuDir\" On=\"uninstall\" /><RegistryValue Root=\"HKCU\" Key=\"SOFTWARE\\PheonixSystems\\$(var.ProductName)\" Type=\"string\" Value=\"\" KeyPath=\"yes\" /></Component>")
-                       .AppendLine("<Directory Id=\"$(var.ProductName)ProgramMenuDir\" Name=\"eStoreAdmin\">")
-                       .AppendLine("<Component Id=\"$(var.ProductName)ProgramMenuDir\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
-                       .AppendLine("<RemoveFolder Id=\"$(var.ProductName)ProgramMenuDir\" On=\"uninstall\"/>")
-                       .AppendLine("<RegistryValue Root=\"HKCU\" Key=\"SOFTWARE\\PheonixSystems\\$(var.ProductName)\" Type=\"string\" Value=\"\" KeyPath=\"yes\" />")
-                       .AppendLine("</Component>")
-                       .AppendLine("</Directory></Directory></Directory></Directory>")
-                       .AppendLine("<iis:WebApplication Id=\"$(var.ProductName)_webapp\" Name=\"$(var.ProductName)_site\" WebAppPool=\"$(var.ProductName)_webapppool\" />")
-                       .AppendLine("<Feature Id=\"$(var.ProductName)Complete\" Title=\"$(var.ProductName) Website\" Level=\"1\">")
-                       .AppendLine("<ComponentGroupRef Id=\"ProductWeb.Content\" />")
-                       .AppendLine("<ComponentGroupRef Id=\"$(var.ProductName)_productcomponentref\" />")
-                       .AppendLine("<ComponentRef Id=\"ProgramMenuDir\"/>")
-                       .AppendLine("<ComponentRef Id=\"$(var.ProductName)ProgramMenuDir\"/>")
-                       .AppendLine("<ComponentRef Id=\"WebShortcut\"/>")
-                       .AppendLine("<ComponentRef Id=\"Manual\"/>")
-                       .AppendLine("</Feature>")
-                       .AppendLine("<Feature Id=\"Documentation\" Title=\"Documentation\" Description=\"The user manual.\" Level=\"1000\">")
-                       .AppendLine("<ComponentRef Id=\"ProgramMenuDir\"/>")
-                       .AppendLine("<ComponentRef Id=\"Manual\" />")
-                       .AppendLine("</Feature>")
-                       .AppendLine("<ComponentGroup Id=\"$(var.ProductName)_productcomponentref\">")
-                       .AppendLine("<ComponentRef Id=\"$(var.ProductName)_productcomponent\" />")
-                       .AppendLine("<ComponentRef Id=\"$(var.ProductName)_websitecomponent\" />")
-                       .AppendLine("</ComponentGroup>")
-                       .AppendLine("<UIRef Id=\"WixUI_Mondo\" />")
-                       .AppendLine("<UIRef Id=\"WixUI_ErrorProgressText\" />")
-                       .AppendLine("<CustomAction Id=\"Assign_ROOT_DRIVE\" Property=\"ROOT_DRIVE\" Value=\"C:\\\"/>")
-                       .AppendLine("<UI>")
-                       .AppendLine("<InstallUISequence>")
-                       .AppendLine("<Custom Action=\"Assign_ROOT_DRIVE\" Before=\"CostInitialize\"></Custom>")
-                       .AppendLine("</InstallUISequence>")
-                       .AppendLine("</UI>")
+                       .AppendLine("<?include $(var." + product + ".SetupLibrary.ProjectDir)\\Config.wxi?>")
+                       .AppendLine("<Product Id=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\" Name=\"$(var.ProductName)\" Language=\"1033\" Version=\"1.0.0.0\" Manufacturer=\"Full Circle Solutions\" UpgradeCode=\"b6b32a5a-0a7b-492a-9c32-c4c773635fdf\">")
+                       .AppendLine("<Package Keywords=\"Installer\" Description=\"$(var.ProductName) $(var.Version) Installer\" InstallerVersion=\"500\" InstallPrivileges=\"elevated\" Compressed=\"yes\" InstallScope=\"perMachine\" Platform=\"x86\" />")
+                       .AppendLine("<!--<MajorUpgrade DowngradeErrorMessage=\"A newer version of $(var.ProductName) is already installed.\" />-->")
+                       .AppendLine("<MediaTemplate EmbedCab=\"yes\" />")
+                       .AppendLine("<PropertyRef Id=\"NETFRAMEWORK45\"/>")
+                       
+                       .AppendLine("<Condition Message=\"This application requires .NET Framework 4.5. Please install the .NET Framework then run this installer again.\">")
+                       .AppendLine("  <![CDATA[Installed OR NETFRAMEWORK45]]>")
+                       .AppendLine("</Condition>")
+                       .AppendLine("<!--Uninstall old versions-->")
+                       .AppendLine("<Upgrade Id=\"$(var.UpgradeCode)\">")
+                       .AppendLine("  <UpgradeVersion Minimum=\"0.0.0.0\"") 
+                       .AppendLine("                  IncludeMinimum=\"yes\"")
+                       .AppendLine("                  OnlyDetect=\"no\"")
+                       .AppendLine("                  Maximum=\"$(var.Version)\"") 
+                       .AppendLine("                  IncludeMaximum=\"no\"")
+                       .AppendLine("                  Property=\"PREVIOUSFOUND\" />")
+                       .AppendLine("</Upgrade>")
                        .AppendLine("<InstallExecuteSequence>")
-                       .AppendLine("<Custom Action=\"Assign_ROOT_DRIVE\" Before=\"CostInitialize\"></Custom>")
+                       .AppendLine("  <RemoveExistingProducts After=\"InstallInitialize\"/>")
                        .AppendLine("</InstallExecuteSequence>")
+                       
+                       .AppendLine("<!-- Program Installation -->")
+                       .AppendLine("<Directory Id=\"TARGETDIR\" Name=\"SourceDir\">")
+
+                       .AppendLine("  <!--Add EventSource-->")
+                       .AppendLine("<Component Id=\""+ product + "EventSource\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
+                       .AppendLine("  <util:EventSource Name=\"$(var.ProductName)\"")
+                       .AppendLine("                    Log=\"Application\"")
+                       .AppendLine("                    EventMessageFile=\"[NETFRAMEWORK40FULLINSTALLROOTDIR]EventLogMessages.dll\"")
+                       .AppendLine("                    KeyPath='yes'/>")
+                       .AppendLine("</Component>")
+
+                       .AppendLine("<!-- Define the directory structure -->")
+                       .AppendLine("<Directory Id=\"$(var.PlatformProgramFilesFolder)\">")
+                       .AppendLine("<Directory Id=\"ProductContent.Manifest\" Name=\"$(var.ProductName)\">")
+
+                       .AppendLine("<Component Id=\"ProductContent.Manifest\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\" Feature=\"Complete\"")
+                       .AppendLine("           SharedDllRefCount=\"no\" KeyPath=\"yes\" NeverOverwrite=\"no\" Permanent=\"no\" Transitive=\"no\"")
+                       .AppendLine("           Win64=\"yes\" Location=\"either\">")
+                       .AppendLine("  <CreateFolder>")
+                       .AppendLine("    <util:PermissionEx User=\"Everyone\"")
+                       .AppendLine("                       Read=\"yes\"")
+                       .AppendLine("                       GenericAll=\"yes\"")
+                       .AppendLine("                       Delete=\"yes\"")
+                       .AppendLine("                       CreateChild=\"yes\"")
+                       .AppendLine("                       CreateFile=\"yes\"")
+                       .AppendLine("                       DeleteChild=\"yes\"")
+                       .AppendLine("                       Traverse=\"yes\"/>")
+                       .AppendLine("  </CreateFolder>")
+                       .AppendLine("</Component>")
+                       .AppendLine("</Directory>") //this is supposed to close off ProductContent.Manifest
+                       .AppendLine("</Directory>") //this is supposed to close off PlatformProgramFilesFolder
+                       .AppendLine("<Directory Id=\"ProgramMenuFolder\">")
+                       .AppendLine("<Directory Id=\"ApplicationProgramsFolder\" Name=\"$(var.ProductName)\"/>")
+                       .AppendLine("</Directory>")
+                       .AppendLine("<Directory Id=\"DesktopFolder\" Name=\"Desktop\" />")
+                       .AppendLine("</Directory>")
+                       .AppendLine("<!-- Add files to installer package -->")
+                       .AppendLine("<DirectoryRef Id=\"ProductContent.Manifest\">")
+                       .AppendLine("</DirectoryRef>")
+
+                       .AppendLine("<!-- Add the shortcuts-->")
+                       .AppendLine("<DirectoryRef Id=\"ApplicationProgramsFolder\">")
+                       .AppendLine("<Component Id=\"UninstallShortcut\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
+                       .AppendLine("<Shortcut Id=\"UninstallProduct\"")
+                       .AppendLine("Name=\"Uninstall $(var.ProductName)\"")
+                       .AppendLine("Description=\"Uninstalls $(var.ProductName)\"")
+                       .AppendLine("Target=\"[System64Folder]msiexec.exe\"")
+                       .AppendLine("Arguments=\"/x [ProductCode]\"")
+                       .AppendLine("Icon=\"WebIcon\"/>")
+                       .AppendLine("<RemoveFolder Id=\"ApplicationProgramsFolder\" On=\"uninstall\"/>")
+                       .AppendLine("<RegistryValue Root=\"HKCU\" Key=\"Software\\Microsoft\\$(var.ProductName)\" Name=\"installed\" Type=\"integer\" Value=\"1\" KeyPath=\"yes\"/>")
+                       .AppendLine("</Component>")
+                       .AppendLine("<!---Create Environment variable-->")
+                       .AppendLine("<Component Id=\"PRODUCTHOMEENVVAR\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
+                       .AppendLine("<Environment Id=\"ProductHomeVar\"")
+                       .AppendLine("             Action=\"set\"")
+                       .AppendLine("             Part=\"all\"")
+                       .AppendLine("             Name=\"$(var.HomeDirectory)\"")
+                       .AppendLine("             Permanent=\"no\"")
+                       .AppendLine("             System=\"yes\"")
+                       .AppendLine("             Value=\"[ProductContent.Manifest]\"/>")
+                       .AppendLine("<RegistryValue Root=\"HKCU\" Key=\"Software\\Microsoft\\$(var.ProductName)\" Name=\"installed\" Type=\"integer\" Value=\"1\" KeyPath=\"yes\"/>")
+                       .AppendLine("<CreateFolder />")
+                       .AppendLine("<RemoveFolder Id=\"ProductHomeVar\" On=\"uninstall\"/>")
+                       .AppendLine("</Component>")
+                       .AppendLine("<!--Add PRODUCTHOMEENVVAR to Path-->")
+                       .AppendLine("<Component Id=\"PATHENVVAR\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
+                       .AppendLine("<Environment Id=\"PathVar\"")
+                       .AppendLine("             Action=\"set\"")
+                       .AppendLine("             Part=\"first\"")
+                       .AppendLine("             Name=\"Path\"")
+                       .AppendLine("             Permanent=\"no\"")
+                       .AppendLine("             System=\"yes\"")
+                       .AppendLine("             Value=\"[ProductContent.Manifest]\" />")
+                       .AppendLine("<RegistryValue Root=\"HKCU\" Key=\"Software\\Microsoft\\$(var.ProductName)\" Name=\"installed\" Type=\"integer\" Value=\"1\" KeyPath=\"yes\"/>")
+                       .AppendLine("<CreateFolder />")
+                       .AppendLine("<RemoveFolder Id=\"PathVar\" On=\"uninstall\"/>")
+                       .AppendLine("</Component>")
+                       .AppendLine("</DirectoryRef>")
+
+                       .AppendLine("<DirectoryRef Id=\"DesktopFolder\">")
+                       .AppendLine("<Component Id=\"DesktopShortcut\" Guid=\"" + GuidGenerator.GenerateTimeBasedGuidString() + "\">")
+                       .AppendLine("<Shortcut Id=\"ApplicationDesktopShortcut\"")
+                       .AppendLine("          Name=\"StackedBrowsers Config\"")
+                       .AppendLine("          Description=\"StackedBrowser Config Tool\"")
+                       .AppendLine("         Target=\"[ProductContent.Manifest]$(var.ProductName).exe\"")
+                       .AppendLine("          WorkingDirectory=\"ProductContent.Manifest\"/>")
+                       .AppendLine("<RemoveFolder Id=\"DesktopFolder\" On=\"uninstall\"/>")
+                       .AppendLine("<RegistryValue Root=\"HKCU\"")
+                       .AppendLine("               Key=\"Software/$(var.ProductName)\"")
+                       .AppendLine("               Name=\"installed\"")
+                       .AppendLine("               Type=\"integer\"")
+                       .AppendLine("               Value=\"1\"")
+                       .AppendLine("                KeyPath=\"yes\"/>")
+                       .AppendLine("</Component>")
+                       .AppendLine("</DirectoryRef>")
+                       .AppendLine("  <Icon Id=\"WebIcon\" SourceFile=\"Icons\\oakton128x128.ico\" />")
                        .AppendLine("</Product>")
                        .Append("</Wix>");
-            WriteFile(productFilename, ProductFile.ToString());
+            WriteFile(product + Constants.ProductFileSuffix, ProductFile);
         }
 
         public static void WriteContentFile(string rootDir, string contentFilename, string configFilename) {
             Exclusions.PopulateExclusionLists();
             BuildContentFile(rootDir, configFilename);
-            WriteFile(contentFilename, ContentFile.ToString());
+            WriteFile(contentFilename, ContentFile);
         }
 
         private static void BuildContentFile(string rootDir, string configFilename) {
@@ -140,7 +228,7 @@ namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
 
         private static void EmitDsxmlHeader() {
             ContentFile.AppendLine("<Fragment>")
-                       .AppendLine("<DirectoryRef Id=\"ProductWeb.Content\">");
+                       .AppendLine("<DirectoryRef Id=\"ProductContent.Manifest\">");
         }
 
         private static void EmitDirectoryStructure(string rootDir) {
@@ -186,7 +274,7 @@ namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
         }
 
         private static void EmitCgxmlHeader() {
-            ContentFile.AppendLine("<Fragment><ComponentGroup Id=\"ProductWeb.Content\">");
+            ContentFile.AppendLine("<Fragment><ComponentGroup Id=\"ProductContent.Manifest\">");
         }
 
         private static void EmitCgComponentItemXml(string guid) {
@@ -211,8 +299,8 @@ namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
                     var files = FileUtil.GetAllFilesInDirectory(directoryName);
                     if (FileUtil.HasFiles(files)) {
                         EmitCbdxmlHeader(relativeDirectoryName, d.Value);
-                        foreach (var file in files) {
-                            if (Exclusions.IsValidFile(file.Name)) {
+                        foreach(var file in files) {
+                            if(Exclusions.IsValidFile(file.Name)) {
                                 EmitComponentXml(directoryName, relativeDirectoryName, file.Name);
                             }
                         }
@@ -266,8 +354,8 @@ namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
                        .AppendLine("</Fragment>");
         }
 
-        private static void WriteFile(string filename, string content) {
-            File.WriteAllText(filename, PrettyPrintFormatter.Format(content));
+        private static void WriteFile(string filename, StringBuilder file) {
+            File.WriteAllText(filename, PrettyPrintFormatter.Format(file.ToString()));
         }
     }
 }

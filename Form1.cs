@@ -5,23 +5,23 @@ using System.Text;
 using System.Windows.Forms;
 using WIXWriter.au.com.fullcirclesolutions.wixwriter;
 
-namespace com.phoenixconsulting.wixwriter {
-    public partial class frmWIXGenerator : Form {
+namespace WIXWriter {
+    public partial class FrmWixGenerator : Form {
         //private void frmWIXGenerator_Load(object sender, EventArgs e) {
         //    Icon icoMain = new Icon("~/favicon.ico");
         //    this.Icon = icoMain;
         //}
 
         private void Form1_Load(object sender, EventArgs e) {
-            this.Icon = new Icon("favicon.ico");
+            Icon = new Icon("favicon.ico");
         }
 
-        public frmWIXGenerator() {
+        public FrmWixGenerator() {
             InitializeComponent();
-            setMoveFunctionVisibility(false);
+            SetMoveFunctionVisibility(false);
         }
 
-        private void setMoveFunctionVisibility(bool b) {
+        private void SetMoveFunctionVisibility(bool b) {
             btnMove.Visible = b;
             btnOutputPath.Visible = b;
             txtOutputPath.Visible = b;
@@ -29,7 +29,7 @@ namespace com.phoenixconsulting.wixwriter {
         }
 
         public void ChooseFolder(TextBox tb) {
-            folderBrowserDialog1.SelectedPath = @"D:\GitRepositories";
+            folderBrowserDialog1.SelectedPath = @"C:\GitRepositories";
             if(folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
                 tb.Text = folderBrowserDialog1.SelectedPath;
             }
@@ -40,61 +40,74 @@ namespace com.phoenixconsulting.wixwriter {
         }
 
         private void btnGenerate_Click(object sender, EventArgs e) {
-            if(txtRoot.Text.ToLower().Equals("help")) {
-                txtConsole.Text = "Enter the root directory of the solution to be processed, the product name, the content output filename, the config output filename and the product output filename." + Environment.NewLine +
-                                      "For Example: WIXContentWriter C:\\MySolutionRoot ProductName ProductContent.wxs Config.wxi Product.wxs";
+            var rootDirectory = txtRoot.Text;
+            var product = txtProductName.Text;
+            var configFile = txtConfigFileName.Text;
+            var bundleFile = txtBundleFileName.Text;
+            var productFile = txtProductFileName.Text;
+            if(rootDirectory.ToLower().Equals("help")) {
+                txtConsole.Text = @"Enter the root directory of the solution to be processed, the product name, the content output filename, the config output filename and the product output filename." + Environment.NewLine +
+                                  @"For Example: WIXContentWriter C:\MySolutionRoot ProductName ProductContent.wxs Config.wxi Product.wxs";
             } else {
-                if(txtRoot.Text.Equals(string.Empty) ||
-                    txtProductName.Text.Equals(string.Empty) ||
-                    txtContentName.Text.Equals(string.Empty) ||
-                    txtConfigName.Text.Equals(string.Empty) ||
-                    txtProductFileName.Text.Equals(string.Empty)) {
-                    txtConsole.Text = "Must enter 5 arguments. Enter help as first parameter for assistance.";
+                if(string.IsNullOrEmpty(rootDirectory) ||
+                   string.IsNullOrEmpty(product) ||
+                   string.IsNullOrEmpty(bundleFile) ||
+                   string.IsNullOrEmpty(configFile) ||
+                   string.IsNullOrEmpty(productFile)) {
+                    txtConsole.Text = @"Must enter 5 arguments. Enter help as first parameter for assistance.";
                 } else {
-                    if(!Directory.Exists(txtRoot.Text)) {
-                        txtConsole.Text = "Solution directory specified does not exist. Try again.";
+                    if(!Directory.Exists(rootDirectory)) {
+                        txtConsole.Text = @"Solution directory specified does not exist. Try again.";
                     } else {
                         //Correct number of arguments - ready to attempt processing.
-                        removeExistingFiles();
+                        RemoveExistingFiles();
                         var text = new StringBuilder();
-                        FileWriter.WriteConfigFile(txtProductName.Text, txtConfigName.Text);
-                        text.AppendLine("Successfully completed writing WIX Config file.");
-                        FileWriter.WriteProductFile(txtConfigName.Text, txtProductFileName.Text);
-                        text.AppendLine("Successfully completed writing WIX Product file.");
-                        FileWriter.WriteContentFile(txtRoot.Text, txtContentName.Text, txtConfigName.Text);
-                        text.AppendLine("Successfully completed writing WIX Content file.");
+                        FileWriter.WriteConfigFile(product, configFile);
+                        text.AppendLine("Successfully completed writing the Config file.");
+                        FileWriter.WriteBundleFile(product + bundleFile, product);
+                        text.AppendLine("Successfully completed writing the Bundle file.");
+                        FileWriter.WriteProductFile(product + productFile);
+                        text.AppendLine("Successfully completed writing the Product file.");
+                        FileWriter.WriteContentFile(rootDirectory, product + Constants.ContentFileSuffix, product + configFile);
+                        text.AppendLine("Successfully completed writing the Content file.");
                         text.AppendLine("Completed Processing.");
                         txtConsole.Text = text.ToString();
                         
-                        setMoveFunctionVisibility(true);
+                        SetMoveFunctionVisibility(true);
                     }
                 }
             }
         }
 
-        private void removeExistingFiles(){
-            removeFile(txtContentName.Text);
-            removeFile(txtConfigName.Text);
-            removeFile(txtProductFileName.Text);
+        private void RemoveExistingFiles() {
+            var product = txtProductName.Text;
+            RemoveFile(product + txtConfigFileName.Text);
+            RemoveFile(product + txtBundleFileName.Text);
+            RemoveFile(product + txtProductFileName.Text);
+            RemoveFile(product + Constants.ContentFileSuffix);
         }
 
-        private void removeFile(string filename) {
+        private static void RemoveFile(string filename) {
             if(File.Exists(filename)) {
                 File.Delete(filename);
             }
         }
 
         private void btnMove_Click(object sender, EventArgs e) {
-            if(txtOutputPath.Text.Equals("")) {
-                txtConsole.Text = txtConsole.Text + "Output path must by specified to move the files." + Environment.NewLine;
+            if(string.IsNullOrEmpty(txtOutputPath.Text)) {
+                AppendToConsole(@"Output path must by specified to move the files.");
             } else {
                 if(!Directory.Exists(txtOutputPath.Text)) {
-                    txtConsole.Text = txtConsole.Text + "Output directory does not exist. Try again" + Environment.NewLine;
+                    AppendToConsole(@"Output directory does not exist. Try again");
                 } else {
                     var filesMoved = FileMover.MoveFiles(txtOutputPath.Text);
-                    txtConsole.Text = txtConsole.Text + "Finished moving " + filesMoved + " files to " + txtOutputPath.Text + Environment.NewLine;
+                    AppendToConsole(@"Finished moving " + filesMoved + @" files to " + txtOutputPath.Text);
                 }
             }
+        }
+
+        private void AppendToConsole(string text) {
+            txtConsole.Text += text + Environment.NewLine;
         }
 
         private void button2_Click(object sender, EventArgs e) {
@@ -102,7 +115,7 @@ namespace com.phoenixconsulting.wixwriter {
         }
 
         private void btnClear_Click(object sender, EventArgs e) {
-            txtConsole.Text = "";
+            txtConsole.Text = string.Empty;
         }
     }
 }
