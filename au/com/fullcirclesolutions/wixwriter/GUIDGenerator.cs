@@ -2,15 +2,15 @@
 using System.Text;
 using System.Threading;
 
-namespace com.phoenixconsulting.wixwriter {
-    public static class GUIDGenerator {
+namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
+    public static class GuidGenerator {
 
         // guid version types
         private enum GuidVersion : byte {
             TimeBased = 0x01,
-            Reserved = 0x02,
-            NameBased = 0x03,
-            Random = 0x04
+            //Reserved = 0x02,
+            //NameBased = 0x03,
+            //Random = 0x04
         }
 
         // number of bytes in guid
@@ -27,9 +27,9 @@ namespace com.phoenixconsulting.wixwriter {
         public const int VersionByteShift = 4;
 
         // indexes within the uuid array for certain boundaries
-        private static readonly byte TimestampByte = 0;
-        private static readonly byte GuidClockSequenceByte = 8;
-        private static readonly byte NodeByte = 10;
+        private const byte TimestampByte = 0;
+        private const byte GuidClockSequenceByte = 8;
+        private const byte NodeByte = 10;
 
         // offset to move from 1/1/0001, which is 0-time for .NET, to gregorian 0-time of 10/15/1582
         private static readonly DateTime GregorianCalendarStart = new DateTime(1582, 10, 15, 0, 0, 0, DateTimeKind.Utc);
@@ -37,15 +37,15 @@ namespace com.phoenixconsulting.wixwriter {
         // random node that is 16 bytes
         private static readonly byte[] RandomNode;
 
-        private static Random _random = new Random();
+        private static readonly Random Random = new Random();
 
-        static GUIDGenerator() {
+        static GuidGenerator() {
             RandomNode = new byte[6];
-            _random.NextBytes(RandomNode);
+            Random.NextBytes(RandomNode);
         }
 
         public static string GenerateTimeBasedGuidStringWithNoDashes() {
-            StringBuilder sb = new StringBuilder(GenerateTimeBasedGuid().ToString());
+            var sb = new StringBuilder(GenerateTimeBasedGuid().ToString());
             sb.Replace("-", "");
             return sb.ToString().ToUpper();
         }
@@ -59,17 +59,17 @@ namespace com.phoenixconsulting.wixwriter {
             return GenerateTimeBasedGuid(DateTime.UtcNow, RandomNode);
         }
 
-        private static Guid GenerateTimeBasedGuid(DateTime dateTime) {
-            return GenerateTimeBasedGuid(dateTime, RandomNode);
-        }
+        //private static Guid GenerateTimeBasedGuid(DateTime dateTime) {
+        //    return GenerateTimeBasedGuid(dateTime, RandomNode);
+        //}
 
         
         private static Guid GenerateTimeBasedGuid(DateTime dateTime, byte[] node) {
-            long ticks = dateTime.Ticks - GregorianCalendarStart.Ticks;
+            var ticks = dateTime.Ticks - GregorianCalendarStart.Ticks;
 
-            byte[] guid = new byte[ByteArraySize];
-            byte[] clockSequenceBytes = BitConverter.GetBytes(Convert.ToInt16(Environment.TickCount % Int16.MaxValue));
-            byte[] timestamp = BitConverter.GetBytes(ticks);
+            var guid = new byte[ByteArraySize];
+            var clockSequenceBytes = BitConverter.GetBytes(Convert.ToInt16(Environment.TickCount % Int16.MaxValue));
+            var timestamp = BitConverter.GetBytes(ticks);
 
             // copy node
             Array.Copy(node, 0, guid, NodeByte, node.Length);
@@ -81,12 +81,12 @@ namespace com.phoenixconsulting.wixwriter {
             Array.Copy(timestamp, 0, guid, TimestampByte, timestamp.Length);
 
             // set the variant
-            guid[VariantByte] &= (byte)VariantByteMask;
-            guid[VariantByte] |= (byte)VariantByteShift;
+            guid[VariantByte] &= VariantByteMask;
+            guid[VariantByte] |= VariantByteShift;
 
             // set the version
-            guid[VersionByte] &= (byte)VersionByteMask;
-            guid[VersionByte] |= (byte)((byte)GuidVersion.TimeBased << VersionByteShift);
+            guid[VersionByte] &= VersionByteMask;
+            guid[VersionByte] |= (byte)GuidVersion.TimeBased << VersionByteShift;
 
             return new Guid(guid);
         }

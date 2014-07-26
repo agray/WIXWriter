@@ -1,25 +1,22 @@
 ﻿using System.IO;
 using System.Xml;
 
-namespace com.phoenixconsulting.wixwriter {
+namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
     class PrettyPrintFormatter {
         //[STAThread]
         public static string Format(string s) {
-            StringWriter stringWriter = new StringWriter();
-            XmlDocument doc = new XmlDocument();
+            var stringWriter = new StringWriter();
+            var doc = new XmlDocument();
             
             //get your document
             doc.LoadXml(s);
             
             //create reader and writer
-            XmlNodeReader xmlReader = new XmlNodeReader(doc);
-            XmlTextWriter xmlWriter = new XmlTextWriter(stringWriter);
+            var xmlReader = new XmlNodeReader(doc);
+            var xmlWriter = new XmlTextWriter(stringWriter) {Formatting = Formatting.Indented, Indentation = 2, IndentChar = ' '};
             
             //set formatting options
-            xmlWriter.Formatting = Formatting.Indented;
-            xmlWriter.Indentation = 2;
-            xmlWriter.IndentChar = ' ';
-            
+
             //write the document formatted
             xmlWriter.WriteNode(xmlReader, true);
             return stringWriter.ToString();

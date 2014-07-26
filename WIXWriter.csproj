@@ -62,20 +62,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="com\phoenixconsulting\wixwriter\Constants.cs" />
-    <Compile Include="com\phoenixconsulting\wixwriter\Exclusions.cs" />
-    <Compile Include="com\phoenixconsulting\wixwriter\FileMover.cs" />
-    <Compile Include="com\phoenixconsulting\wixwriter\FileUtil.cs" />
-    <Compile Include="com\phoenixconsulting\wixwriter\FileWriter.cs" />
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\Constants.cs" />
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\Exclusions.cs" />
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\FileMover.cs" />
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\FileUtil.cs" />
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\FileWriter.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="com\phoenixconsulting\wixwriter\GUIDGenerator.cs" />
-    <Compile Include="com\phoenixconsulting\wixwriter\PrettyPrintFormatter.cs" />
-    <Compile Include="com\phoenixconsulting\wixwriter\Program.cs">
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\GuidGenerator.cs" />
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\PrettyPrintFormatter.cs" />
+    <Compile Include="au\com\fullcirclesolutions\wixwriter\Program.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,6 +125,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

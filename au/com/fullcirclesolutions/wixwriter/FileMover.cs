@@ -1,14 +1,15 @@
 ﻿using System.IO;
-namespace com.phoenixconsulting.wixwriter {
+
+namespace WIXWriter.au.com.fullcirclesolutions.wixwriter {
     public class FileMover {
         public static int MoveFiles(string path) {
-            DirectoryInfo fromDir = new DirectoryInfo(".");
-            DirectoryInfo toDir = new DirectoryInfo(path);
+            var fromDir = new DirectoryInfo(".");
+            var toDir = new DirectoryInfo(path);
 
-            FileInfo[] fromFiles = fromDir.GetFiles("*.wx*");
+            var fromFiles = fromDir.GetFiles("*.wx*");
             if (fromFiles.Length > 0) {
-                foreach (FileInfo file in fromFiles) {
-                    string targetFile = toDir + Constants.DIRSEP + file.Name;
+                foreach (var file in fromFiles) {
+                    var targetFile = toDir + Constants.Dirsep + file.Name;
                     if (File.Exists(targetFile)) {
                         File.Delete(targetFile);
                     }

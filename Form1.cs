@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using WIXWriter.au.com.fullcirclesolutions.wixwriter;
 
 namespace com.phoenixconsulting.wixwriter {
     public partial class frmWIXGenerator : Form {
@@ -55,7 +56,7 @@ namespace com.phoenixconsulting.wixwriter {
                     } else {
                         //Correct number of arguments - ready to attempt processing.
                         removeExistingFiles();
-                        StringBuilder text = new StringBuilder();
+                        var text = new StringBuilder();
                         FileWriter.WriteConfigFile(txtProductName.Text, txtConfigName.Text);
                         text.AppendLine("Successfully completed writing WIX Config file.");
                         FileWriter.WriteProductFile(txtConfigName.Text, txtProductFileName.Text);
@@ -90,7 +91,7 @@ namespace com.phoenixconsulting.wixwriter {
                 if(!Directory.Exists(txtOutputPath.Text)) {
                     txtConsole.Text = txtConsole.Text + "Output directory does not exist. Try again" + Environment.NewLine;
                 } else {
-                    int filesMoved = FileMover.MoveFiles(txtOutputPath.Text);
+                    var filesMoved = FileMover.MoveFiles(txtOutputPath.Text);
                     txtConsole.Text = txtConsole.Text + "Finished moving " + filesMoved + " files to " + txtOutputPath.Text + Environment.NewLine;
                 }
             }
